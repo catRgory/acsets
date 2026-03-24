@@ -1,0 +1,40 @@
+Package: acsets
+Title: Attributed C-Sets for R
+Version: 0.0.1
+Authors@R:
+    person("Simon", "Frost", email = "sdwfrost@gmail.com",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0002-5207-9879"))
+Description: Attributed C-sets (ACSets) are a family of data structures
+    generalizing both graphs and data frames. They are an efficient
+    in-memory implementation of a category-theoretic formalism for
+    relational databases. This package provides data structures for ACSet
+    schemas and ACSets, with operations for querying, mutation, and
+    serialization. Port of the AlgebraicJulia ACSets.jl package.
+License: MIT + file LICENSE
+URL: https://github.com/catRgory/acsets
+BugReports: https://github.com/catRgory/acsets/issues
+Imports:
+    cli,
+    jsonlite,
+    rlang (>= 1.1.0),
+    S7 (>= 0.2.0)
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Collate:
+    'acsets-package.R'
+    'schema.R'
+    'parts.R'
+    'columns.R'
+    'acset.R'
+    'deletion.R'
+    'factory.R'
+    'json.R'
+    'query.R'
+    'tables.R'
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
