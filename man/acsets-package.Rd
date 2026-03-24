@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Simon Frost \email{sdwfrost@gmail.com} (\href{https://orcid.org/0000-0002-5207-9879}{ORCID})
+\strong{Maintainer}: Simon Frost \email{sdwfrost@users.noreply.github.com} (\href{https://orcid.org/0000-0002-5207-9879}{ORCID})
 
 }
 \keyword{internal}

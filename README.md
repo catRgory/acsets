@@ -99,6 +99,11 @@ as_data_frame(g, "E")
 
 After installation, browse the vignettes for worked examples:
 
+- [Introduction to ACSets](https://catrgory.github.io/acsets/articles/acsets.html) — schemas, constructors, queries, mutation, JSON
+- [Advanced ACSet Patterns](https://catrgory.github.io/acsets/articles/advanced.html) — custom schemas, indexing, deletion, composition
+
+Or from R:
+
 ```r
 vignette("acsets")    # Introduction to ACSets
 vignette("advanced")  # Advanced ACSet Patterns

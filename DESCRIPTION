@@ -2,7 +2,7 @@ Package: acsets
 Title: Attributed C-Sets for R
 Version: 0.1.0
 Authors@R:
-    person("Simon", "Frost", email = "sdwfrost@gmail.com",
+    person("Simon", "Frost", email = "sdwfrost@users.noreply.github.com",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0002-5207-9879"))
 Description: Attributed C-sets (ACSets) are a family of data structures
     generalizing both graphs and data frames. They are an efficient
