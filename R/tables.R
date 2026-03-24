@@ -62,7 +62,14 @@ acset_equal <- function(x, y) {
   for (nm in names(x@.data$subparts)) {
     xv <- x@.data$subparts[[nm]]$values
     yv <- y@.data$subparts[[nm]]$values
-    if (!identical(xv, yv)) return(FALSE)
+    if (length(xv) != length(yv)) return(FALSE)
+    # Use element-wise comparison to handle integer/double differences
+    if (!isTRUE(all(xv == yv, na.rm = FALSE))) {
+      # Check NA positions match
+      if (!identical(is.na(xv), is.na(yv))) return(FALSE)
+      non_na <- !is.na(xv)
+      if (!all(xv[non_na] == yv[non_na])) return(FALSE)
+    }
   }
   TRUE
 }
