@@ -867,5 +867,5 @@ t_loop <- system.time({
 cat("Batch:  ", t_batch[["elapsed"]], "s\n")
 #> Batch:   0 s
 cat("Loop:   ", t_loop[["elapsed"]], "s\n")
-#> Loop:    0.103 s
+#> Loop:    0.093 s
 ```
