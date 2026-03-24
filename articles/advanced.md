@@ -865,7 +865,7 @@ t_loop <- system.time({
   for (i in seq_len(5000)) add_part(bg2, "V")
 })
 cat("Batch:  ", t_batch[["elapsed"]], "s\n")
-#> Batch:   0 s
+#> Batch:   0.001 s
 cat("Loop:   ", t_loop[["elapsed"]], "s\n")
-#> Loop:    0.104 s
+#> Loop:    0.103 s
 ```

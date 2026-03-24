@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/catRgory/acsets/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/catRgory/acsets/blob/main/DESCRIPTION)
 
 Frost S (2026). *acsets: Attributed C-Sets for R*. R package version
 0.1.0, <https://github.com/catRgory/acsets>.
