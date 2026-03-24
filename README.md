@@ -4,6 +4,7 @@
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/catRgory/acsets/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/catRgory/acsets/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/catRgory/acsets/graph/badge.svg)](https://codecov.io/gh/catRgory/acsets)
 <!-- badges: end -->
 
 **Attributed C-Sets for R** — a category-theoretic approach to structured,

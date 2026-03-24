@@ -17,3 +17,12 @@ An ACSet instance.
 \description{
 Parse a JSON-compatible list into an ACSet
 }
+\examples{
+sch <- BasicSchema(obs = c("V"), attrtypes = c("Name"),
+                   attrs = list(attr_spec("name", "V", "Name")))
+Verts <- acset_type(sch)
+input <- list(V = list(list(`_id` = 1L, name = "a"),
+                       list(`_id` = 2L, name = "b")))
+g <- parse_json_acset(Verts, input)
+nparts(g, "V")
+}

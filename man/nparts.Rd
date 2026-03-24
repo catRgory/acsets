@@ -17,3 +17,9 @@ Integer count of parts.
 \description{
 Number of parts of a given object type
 }
+\examples{
+sch <- BasicSchema(obs = c("V"), homs = list())
+g <- ACSet(sch)
+add_parts(g, "V", 5)
+nparts(g, "V")
+}

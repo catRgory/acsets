@@ -9,11 +9,22 @@ add_parts(x, ...)
 \arguments{
 \item{x}{An ACSet.}
 
-\item{...}{Arguments passed to methods.}
+\item{...}{Named subpart values, recycled across new parts.}
 }
 \value{
 Integer vector of newly added part IDs.
 }
 \description{
 Add multiple parts at once
+}
+\examples{
+sch <- BasicSchema(
+  obs = c("V"),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+g <- ACSet(sch)
+ids <- add_parts(g, "V", 3, name = c("a", "b", "c"))
+ids
+subpart(g, NULL, "name")
 }

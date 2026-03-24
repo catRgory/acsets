@@ -17,3 +17,15 @@ A new ACSet containing the disjoint union.
 \description{
 Disjoint union of two ACSets with the same schema
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("E", "V"),
+  homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+)
+Graph <- acset_type(sch)
+g1 <- Graph(V = 2, E = 1, src = 1L, tgt = 2L)
+g2 <- Graph(V = 2, E = 1, src = 1L, tgt = 2L)
+g3 <- disjoint_union(g1, g2)
+nparts(g3, "V")
+nparts(g3, "E")
+}

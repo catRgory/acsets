@@ -5,6 +5,15 @@
 #' @param acs An ACSet.
 #' @param ob Character: object type name.
 #' @returns A data frame with part IDs and subpart columns.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("V"),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' g <- ACSet(sch)
+#' add_parts(g, "V", 3, name = c("a", "b", "c"))
+#' as_data_frame(g, "V")
 #' @export
 as_data_frame <- function(acs, ob) {
   n <- nparts(acs, ob)

@@ -19,3 +19,6 @@ A named list with elements \code{name}, \code{dom}, \code{codom}.
 \description{
 Create a morphism (foreign key) specification
 }
+\examples{
+hom("src", "E", "V")
+}

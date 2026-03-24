@@ -19,3 +19,6 @@ A named list with elements \code{name}, \code{dom}, \code{codom}.
 \description{
 Create an attribute specification
 }
+\examples{
+attr_spec("name", "V", "Name")
+}

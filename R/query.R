@@ -6,6 +6,19 @@
 #' @param acs An ACSet.
 #' @param ob Character: object type to query.
 #' @returns An `acset_query` object for piping to [Where()] and [Select()].
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("V"),
+#'   attrtypes = c("Name", "Age"),
+#'   attrs = list(attr_spec("name", "V", "Name"),
+#'                attr_spec("age", "V", "Age"))
+#' )
+#' g <- ACSet(sch)
+#' add_parts(g, "V", 3, name = c("Alice", "Bob", "Carol"),
+#'           age = c(30, 25, 35))
+#' # Query pipeline: find vertices with age > 28
+#' result <- From(g, "V") |> Where("age", `>`, 28) |> Select("name", "age")
+#' result
 #' @export
 From <- function(acs, ob) {
   ids <- parts(acs, ob)
@@ -23,6 +36,15 @@ From <- function(acs, ob) {
 #' @param op A comparison function (e.g. `==`, `<`).
 #' @param value The value to compare against.
 #' @returns The filtered `acset_query` object.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("V"),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' g <- ACSet(sch)
+#' add_parts(g, "V", 3, name = c("Alice", "Bob", "Carol"))
+#' From(g, "V") |> Where("name", `==`, "Bob") |> Select("name")
 #' @export
 Where <- function(query, f, op, value) {
   stopifnot(inherits(query, "acset_query"))
@@ -38,6 +60,15 @@ Where <- function(query, f, op, value) {
 #' @param query An `acset_query` object from [From()] or [Where()].
 #' @param ... Character names of subparts to include as columns.
 #' @returns A data frame with the selected columns.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("V"),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' g <- ACSet(sch)
+#' add_parts(g, "V", 3, name = c("Alice", "Bob", "Carol"))
+#' From(g, "V") |> Select("name")
 #' @export
 Select <- function(query, ...) {
   stopifnot(inherits(query, "acset_query"))

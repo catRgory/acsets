@@ -15,3 +15,18 @@ A nested list suitable for JSON serialization.
 \description{
 Generate JSON-compatible list from an ACSet
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("E", "V"),
+  homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+Graph <- acset_type(sch)
+g <- Graph(V = 2, E = 1, src = 1L, tgt = 2L, name = c("a", "b"))
+json_list <- generate_json_acset(g)
+str(json_list)
+# Round-trip via JSON
+g2 <- parse_json_acset(Graph, json_list)
+acset_equal(g, g2)
+}

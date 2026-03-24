@@ -17,3 +17,14 @@ The file path, invisibly.
 \description{
 Write an ACSet to JSON file
 }
+\examples{
+sch <- BasicSchema(obs = c("V"), attrtypes = c("Name"),
+                   attrs = list(attr_spec("name", "V", "Name")))
+Verts <- acset_type(sch)
+g <- Verts(V = 2, name = c("a", "b"))
+tmp <- tempfile(fileext = ".json")
+write_json_acset(g, tmp)
+g2 <- read_json_acset(Verts, tmp)
+acset_equal(g, g2)
+unlink(tmp)
+}

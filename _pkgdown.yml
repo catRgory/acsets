@@ -1,0 +1,87 @@
+url: https://catrgory.github.io/acsets/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/catRgory/acsets
+
+reference:
+  - title: "Schemas"
+    desc: "Define the structure of your data"
+    contents:
+      - BasicSchema
+      - attr_spec
+      - attrtypes
+      - codom
+      - dom
+      - hom
+      - homs
+      - objects
+      - types
+
+  - title: "ACSets"
+    desc: "Create and manipulate attributed C-sets"
+    contents:
+      - ACSet
+      - acset
+      - acset_type
+      - add_part
+      - add_parts
+      - set_subpart
+      - set_subparts
+      - clear_subpart
+      - copy_acset
+      - disjoint_union
+      - gc_acset
+      - acset_equal
+
+  - title: "Queries"
+    desc: "Query and filter ACSet data"
+    contents:
+      - From
+      - Select
+      - Where
+      - arrows
+      - attrs
+      - has_part
+      - has_subpart
+      - incident
+      - maxpart
+      - nparts
+      - parts
+      - subpart
+      - tables
+
+  - title: "Serialization"
+    desc: "JSON import/export and data frames"
+    contents:
+      - generate_json_acset
+      - generate_json_schema
+      - parse_json_acset
+      - parse_json_schema
+      - read_json_acset
+      - write_json_acset
+      - as_data_frame
+
+  - title: "Deletion"
+    desc: "Remove parts with cascading"
+    contents:
+      - rem_part
+      - rem_parts
+      - cascading_rem_part
+      - cascading_rem_parts
+
+articles:
+  - title: "Getting Started"
+    contents:
+      - acsets
+  - title: "Advanced Usage"
+    contents:
+      - advanced

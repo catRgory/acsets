@@ -5,6 +5,20 @@
 #'
 #' @param x An ACSet.
 #' @returns A nested list suitable for JSON serialization.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' Graph <- acset_type(sch)
+#' g <- Graph(V = 2, E = 1, src = 1L, tgt = 2L, name = c("a", "b"))
+#' json_list <- generate_json_acset(g)
+#' str(json_list)
+#' # Round-trip via JSON
+#' g2 <- parse_json_acset(Graph, json_list)
+#' acset_equal(g, g2)
 #' @export
 generate_json_acset <- function(x) {
   schema <- x@schema
@@ -40,6 +54,14 @@ generate_json_acset <- function(x) {
 #' @param constructor An acset_constructor from [acset_type()].
 #' @param input A nested list (typically from JSON) representing ACSet data.
 #' @returns An ACSet instance.
+#' @examples
+#' sch <- BasicSchema(obs = c("V"), attrtypes = c("Name"),
+#'                    attrs = list(attr_spec("name", "V", "Name")))
+#' Verts <- acset_type(sch)
+#' input <- list(V = list(list(`_id` = 1L, name = "a"),
+#'                        list(`_id` = 2L, name = "b")))
+#' g <- parse_json_acset(Verts, input)
+#' nparts(g, "V")
 #' @export
 parse_json_acset <- function(constructor, input) {
   if (inherits(constructor, "acset_constructor")) {
@@ -99,6 +121,16 @@ parse_json_acset <- function(constructor, input) {
 #' @param x An ACSet.
 #' @param path File path to write to.
 #' @returns The file path, invisibly.
+#' @examples
+#' sch <- BasicSchema(obs = c("V"), attrtypes = c("Name"),
+#'                    attrs = list(attr_spec("name", "V", "Name")))
+#' Verts <- acset_type(sch)
+#' g <- Verts(V = 2, name = c("a", "b"))
+#' tmp <- tempfile(fileext = ".json")
+#' write_json_acset(g, tmp)
+#' g2 <- read_json_acset(Verts, tmp)
+#' acset_equal(g, g2)
+#' unlink(tmp)
 #' @export
 write_json_acset <- function(x, path) {
   json_data <- generate_json_acset(x)

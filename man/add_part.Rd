@@ -9,11 +9,22 @@ add_part(x, ...)
 \arguments{
 \item{x}{An ACSet.}
 
-\item{...}{Arguments passed to methods.}
+\item{...}{Named subpart values to set on the new part.}
 }
 \value{
 Integer ID of the newly added part.
 }
 \description{
 Add a single part, optionally setting subparts
+}
+\examples{
+sch <- BasicSchema(
+  obs = c("E", "V"),
+  homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+)
+g <- ACSet(sch)
+add_part(g, "V")
+add_part(g, "V")
+add_part(g, "E", src = 1L, tgt = 2L)
+subpart(g, 1L, "src")
 }

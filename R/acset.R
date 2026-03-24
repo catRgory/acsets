@@ -9,6 +9,18 @@
 #' @param schema A BasicSchema defining the structure.
 #' @param index Character vector of morphism/attribute names to index.
 #' @returns An ACSet S7 object.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' g <- ACSet(sch)
+#' add_parts(g, "V", 3, name = c("a", "b", "c"))
+#' add_part(g, "E", src = 1L, tgt = 2L)
+#' nparts(g, "V")
+#' subpart(g, 1L, "name")
 #' @rdname ACSet-class
 #' @export
 ACSet <- S7::new_class("ACSet",
@@ -49,6 +61,11 @@ ACSet <- S7::new_class("ACSet",
 #' @param x An ACSet.
 #' @returns Integer count of parts.
 #' @param ... Arguments passed to methods.
+#' @examples
+#' sch <- BasicSchema(obs = c("V"), homs = list())
+#' g <- ACSet(sch)
+#' add_parts(g, "V", 5)
+#' nparts(g, "V")
 #' @export
 nparts <- S7::new_generic("nparts", "x")
 
@@ -108,7 +125,17 @@ S7::method(has_subpart, ACSet) <- function(x, f) {
 #'
 #' @param x An ACSet.
 #' @returns Integer ID of the newly added part.
-#' @param ... Arguments passed to methods.
+#' @param ... Named subpart values to set on the new part.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+#' )
+#' g <- ACSet(sch)
+#' add_part(g, "V")
+#' add_part(g, "V")
+#' add_part(g, "E", src = 1L, tgt = 2L)
+#' subpart(g, 1L, "src")
 #' @export
 add_part <- S7::new_generic("add_part", "x")
 
@@ -138,7 +165,17 @@ S7::method(add_part, ACSet) <- function(x, ob, ...) {
 #'
 #' @param x An ACSet.
 #' @returns Integer vector of newly added part IDs.
-#' @param ... Arguments passed to methods.
+#' @param ... Named subpart values, recycled across new parts.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("V"),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' g <- ACSet(sch)
+#' ids <- add_parts(g, "V", 3, name = c("a", "b", "c"))
+#' ids
+#' subpart(g, NULL, "name")
 #' @export
 add_parts <- S7::new_generic("add_parts", "x")
 
@@ -167,6 +204,22 @@ S7::method(add_parts, ACSet) <- function(x, ob, n, ...) {
 #'
 #' @param x An ACSet
 #' @param ... Arguments passed to methods.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' g <- ACSet(sch)
+#' add_parts(g, "V", 3, name = c("a", "b", "c"))
+#' add_part(g, "E", src = 1L, tgt = 2L)
+#' # Single value
+#' subpart(g, 1L, "src")
+#' # All values
+#' subpart(g, NULL, "name")
+#' # Composed path: source vertex name of edge 1
+#' subpart(g, 1L, c("src", "name"))
 #' @export
 subpart <- S7::new_generic("subpart", "x")
 
@@ -243,6 +296,16 @@ S7::method(clear_subpart, ACSet) <- function(x, part, f) {
 #'
 #' @param x An ACSet
 #' @param ... Arguments passed to methods.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+#' )
+#' g <- ACSet(sch, index = c("src", "tgt"))
+#' add_parts(g, "V", 3)
+#' add_parts(g, "E", 2, src = c(1L, 1L), tgt = c(2L, 3L))
+#' # Which edges have source vertex 1?
+#' incident(g, 1L, "src")
 #' @export
 incident <- S7::new_generic("incident", "x")
 

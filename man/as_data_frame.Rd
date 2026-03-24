@@ -17,3 +17,13 @@ A data frame with part IDs and subpart columns.
 \description{
 Convert ACSet object type to data.frame
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("V"),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+g <- ACSet(sch)
+add_parts(g, "V", 3, name = c("a", "b", "c"))
+as_data_frame(g, "V")
+}

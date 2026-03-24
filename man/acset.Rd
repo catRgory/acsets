@@ -18,3 +18,12 @@ An ACSet instance
 \description{
 Construct an ACSet using named arguments or NSE
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("E", "V"),
+  homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+)
+Graph <- acset_type(sch)
+g <- acset(Graph, V = 2, E = 1, src = 1L, tgt = 2L)
+nparts(g, "E")
+}

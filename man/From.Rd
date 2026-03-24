@@ -17,3 +17,17 @@ An \code{acset_query} object for piping to \code{\link[=Where]{Where()}} and \co
 \description{
 Start a query on an ACSet object type
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("V"),
+  attrtypes = c("Name", "Age"),
+  attrs = list(attr_spec("name", "V", "Name"),
+               attr_spec("age", "V", "Age"))
+)
+g <- ACSet(sch)
+add_parts(g, "V", 3, name = c("Alice", "Bob", "Carol"),
+          age = c(30, 25, 35))
+# Query pipeline: find vertices with age > 28
+result <- From(g, "V") |> Where("age", `>`, 28) |> Select("name", "age")
+result
+}

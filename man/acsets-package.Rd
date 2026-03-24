@@ -12,6 +12,7 @@ Attributed C-sets (ACSets) are a family of data structures generalizing both gra
 Useful links:
 \itemize{
   \item \url{https://github.com/catRgory/acsets}
+  \item \url{https://catrgory.github.io/acsets/}
   \item Report bugs at \url{https://github.com/catRgory/acsets/issues}
 }
 

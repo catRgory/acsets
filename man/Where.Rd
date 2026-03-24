@@ -21,3 +21,13 @@ The filtered \code{acset_query} object.
 \description{
 Filter query results by a subpart value
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("V"),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+g <- ACSet(sch)
+add_parts(g, "V", 3, name = c("Alice", "Bob", "Carol"))
+From(g, "V") |> Where("name", `==`, "Bob") |> Select("name")
+}

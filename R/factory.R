@@ -9,6 +9,22 @@
 #' @param name Optional name for the type
 #' @param index Character vector of morphism/attribute names to index
 #' @returns A function that creates ACSet instances with this schema
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' Graph <- acset_type(sch, index = c("src", "tgt"))
+#'
+#' # Create an empty graph
+#' g <- Graph()
+#'
+#' # Create a pre-populated graph
+#' g2 <- Graph(V = 3, E = 2, src = c(1L, 2L), tgt = c(2L, 3L),
+#'             name = c("a", "b", "c"))
+#' nparts(g2, "V")
 #' @export
 acset_type <- function(schema, name = NULL, index = character()) {
   force(schema)
@@ -63,6 +79,14 @@ populate_acset <- function(acs, kwargs) {
 #' @param ... Named arguments: object names get integer counts,
 #'   morphism/attribute names get value vectors
 #' @returns An ACSet instance
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+#' )
+#' Graph <- acset_type(sch)
+#' g <- acset(Graph, V = 2, E = 1, src = 1L, tgt = 2L)
+#' nparts(g, "E")
 #' @export
 acset <- function(type, ...) {
   if (inherits(type, "acset_constructor")) {
@@ -102,6 +126,17 @@ copy_acset <- function(x) {
 #' @param x An ACSet.
 #' @returns A new ACSet containing the disjoint union.
 #' @param ... Arguments passed to methods.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+#' )
+#' Graph <- acset_type(sch)
+#' g1 <- Graph(V = 2, E = 1, src = 1L, tgt = 2L)
+#' g2 <- Graph(V = 2, E = 1, src = 1L, tgt = 2L)
+#' g3 <- disjoint_union(g1, g2)
+#' nparts(g3, "V")
+#' nparts(g3, "E")
 #' @export
 disjoint_union <- S7::new_generic("disjoint_union", "x")
 

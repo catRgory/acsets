@@ -14,3 +14,20 @@ subpart(x, ...)
 \description{
 Get subpart value(s)
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("E", "V"),
+  homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+g <- ACSet(sch)
+add_parts(g, "V", 3, name = c("a", "b", "c"))
+add_part(g, "E", src = 1L, tgt = 2L)
+# Single value
+subpart(g, 1L, "src")
+# All values
+subpart(g, NULL, "name")
+# Composed path: source vertex name of edge 1
+subpart(g, 1L, c("src", "name"))
+}

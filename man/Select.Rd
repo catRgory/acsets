@@ -17,3 +17,13 @@ A data frame with the selected columns.
 \description{
 Select columns from a query and return a data frame
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("V"),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+g <- ACSet(sch)
+add_parts(g, "V", 3, name = c("Alice", "Bob", "Carol"))
+From(g, "V") |> Select("name")
+}

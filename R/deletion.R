@@ -103,6 +103,17 @@ S7::method(rem_parts, ACSet) <- function(x, ob, part_ids) {
 #' @param x An ACSet.
 #' @returns The ACSet, invisibly.
 #' @param ... Arguments passed to methods.
+#' @examples
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V"))
+#' )
+#' g <- ACSet(sch, index = c("src", "tgt"))
+#' add_parts(g, "V", 3)
+#' add_parts(g, "E", 2, src = c(1L, 2L), tgt = c(2L, 3L))
+#' # Removing vertex 2 also removes edges that reference it
+#' cascading_rem_part(g, "V", 2L)
+#' nparts(g, "E")
 #' @export
 cascading_rem_part <- S7::new_generic("cascading_rem_part", "x")
 

@@ -19,3 +19,16 @@ An ACSet is a mutable data structure implementing an attributed C-set
 (a functor from a schema category to Set). It generalizes both graphs
 and data frames.
 }
+\examples{
+sch <- BasicSchema(
+  obs = c("E", "V"),
+  homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+g <- ACSet(sch)
+add_parts(g, "V", 3, name = c("a", "b", "c"))
+add_part(g, "E", src = 1L, tgt = 2L)
+nparts(g, "V")
+subpart(g, 1L, "name")
+}

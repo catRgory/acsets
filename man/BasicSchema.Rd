@@ -29,3 +29,15 @@ A \code{BasicSchema} S7 object.
 A schema describes the structure of an ACSet: its objects (tables),
 morphisms (foreign keys), attribute types, and attributes.
 }
+\examples{
+# A simple graph schema: vertices and edges with source/target morphisms
+sch <- BasicSchema(
+  obs = c("E", "V"),
+  homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+  attrtypes = c("Name"),
+  attrs = list(attr_spec("name", "V", "Name"))
+)
+objects(sch)
+homs(sch)
+attrtypes(sch)
+}

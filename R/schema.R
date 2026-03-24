@@ -13,6 +13,17 @@
 #' @param attrs List of attributes, each a named list with `name`, `dom`
 #'   (an object name), `codom` (an attribute type name).
 #' @returns A `BasicSchema` S7 object.
+#' @examples
+#' # A simple graph schema: vertices and edges with source/target morphisms
+#' sch <- BasicSchema(
+#'   obs = c("E", "V"),
+#'   homs = list(hom("src", "E", "V"), hom("tgt", "E", "V")),
+#'   attrtypes = c("Name"),
+#'   attrs = list(attr_spec("name", "V", "Name"))
+#' )
+#' objects(sch)
+#' homs(sch)
+#' attrtypes(sch)
 #' @export
 BasicSchema <- S7::new_class("BasicSchema",
   properties = list(
@@ -71,6 +82,8 @@ BasicSchema <- S7::new_class("BasicSchema",
 #' @param dom Domain object name.
 #' @param codom Codomain object name.
 #' @returns A named list with elements `name`, `dom`, `codom`.
+#' @examples
+#' hom("src", "E", "V")
 #' @export
 hom <- function(name, dom, codom) {
   list(name = name, dom = dom, codom = codom)
@@ -82,6 +95,8 @@ hom <- function(name, dom, codom) {
 #' @param dom Domain object name.
 #' @param codom Codomain attribute type name.
 #' @returns A named list with elements `name`, `dom`, `codom`.
+#' @examples
+#' attr_spec("name", "V", "Name")
 #' @export
 attr_spec <- function(name, dom, codom) {
   list(name = name, dom = dom, codom = codom)
