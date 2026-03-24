@@ -293,7 +293,7 @@ vertex:</p>
 <code class="sourceCode R"><span><span class="va">t_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="kw">for</span> <span class="op">(</span><span class="va">v</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">n_v</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="../reference/incident.html">incident</a></span><span class="op">(</span><span class="va">g_idx</span>, <span class="va">v</span>, <span class="st">"src"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">t_noidx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="kw">for</span> <span class="op">(</span><span class="va">v</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">n_v</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="../reference/incident.html">incident</a></span><span class="op">(</span><span class="va">g_noidx</span>, <span class="va">v</span>, <span class="st">"src"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Indexed:    "</span>, <span class="va">t_idx</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"s\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Indexed:     0.003 s</span></span>
+<span><span class="co">#&gt; Indexed:     0.002 s</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"No index:   "</span>, <span class="va">t_noidx</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"s\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No index:    0.003 s</span></span></code></pre></div>
 <p>The indexed version is faster because each <code><a href="../reference/incident.html">incident()</a></code>
@@ -558,7 +558,7 @@ directly to JSON. Each object becomes an array of records with an
 <code class="sourceCode R"><span><span class="va">parsed_data</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html" class="external-link">fromJSON</a></span><span class="op">(</span><span class="va">json_str</span>, simplifyVector <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">small2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parse_json_acset.html">parse_json_acset</a></span><span class="op">(</span><span class="va">FSM</span>, <span class="va">parsed_data</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/acset_equal.html">acset_equal</a></span><span class="op">(</span><span class="va">small</span>, <span class="va">small2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="file-based-round-trip">File-Based Round-Trip<a class="anchor" aria-label="anchor" href="#file-based-round-trip"></a>
@@ -568,7 +568,7 @@ directly to JSON. Each object becomes an array of records with an
 <span><span class="fu"><a href="../reference/write_json_acset.html">write_json_acset</a></span><span class="op">(</span><span class="va">small</span>, <span class="va">tmp</span><span class="op">)</span></span>
 <span><span class="va">small3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_json_acset.html">read_json_acset</a></span><span class="op">(</span><span class="va">FSM</span>, <span class="va">tmp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/acset_equal.html">acset_equal</a></span><span class="op">(</span><span class="va">small</span>, <span class="va">small3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="schema-serialization">Schema Serialization<a class="anchor" aria-label="anchor" href="#schema-serialization"></a>
@@ -883,7 +883,7 @@ internal storage once instead of 1 000 times.</p></li>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Batch:  "</span>, <span class="va">t_batch</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"s\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Batch:   0 s</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Loop:   "</span>, <span class="va">t_loop</span><span class="op">[[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"s\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loop:    0.105 s</span></span></code></pre></div>
+<span><span class="co">#&gt; Loop:    0.103 s</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

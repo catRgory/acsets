@@ -198,7 +198,7 @@ g
 #>  .. ..  ..$ codom: chr "V"
 #>  .. @ attrtypes: chr(0) 
 #>  .. @ attrs    : list()
-#>  @ .data :<environment: 0x5589e8705bc8>
+#>  @ .data :<environment: 0x5621279d2458>
 ```
 
 ### Adding parts
@@ -272,7 +272,7 @@ g
 #>  .. ..  ..$ codom: chr "V"
 #>  .. @ attrtypes: chr(0) 
 #>  .. @ attrs    : list()
-#>  @ .data :<environment: 0x5589e7d0c718>
+#>  @ .data :<environment: 0x562126fd92f8>
 ```
 
 This is the most convenient way to create ACSets. Let’s also create a
@@ -617,7 +617,7 @@ Parse it back using the same constructor:
 ``` r
 g_parsed <- parse_json_acset(Graph, json_data)
 acset_equal(g_json, g_parsed)
-#> [1] FALSE
+#> [1] TRUE
 ```
 
 ### File round-trip
@@ -628,7 +628,7 @@ write_json_acset(g_json, tmp)
 
 g_from_file <- read_json_acset(Graph, tmp)
 acset_equal(g_json, g_from_file)
-#> [1] FALSE
+#> [1] TRUE
 ```
 
 You can also serialize the schema itself:

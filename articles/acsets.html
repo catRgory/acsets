@@ -250,7 +250,7 @@ the domain and codomain of any arrow by name:</p>
 <span><span class="co">#&gt;  .. ..  ..$ codom: chr "V"</span></span>
 <span><span class="co">#&gt;  .. @ attrtypes: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ attrs    : list()</span></span>
-<span><span class="co">#&gt;  @ .data :&lt;environment: 0x5589e8705bc8&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ .data :&lt;environment: 0x5621279d2458&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adding-parts">Adding parts<a class="anchor" aria-label="anchor" href="#adding-parts"></a>
@@ -309,7 +309,7 @@ values:</p>
 <span><span class="co">#&gt;  .. ..  ..$ codom: chr "V"</span></span>
 <span><span class="co">#&gt;  .. @ attrtypes: chr(0) </span></span>
 <span><span class="co">#&gt;  .. @ attrs    : list()</span></span>
-<span><span class="co">#&gt;  @ .data :&lt;environment: 0x5589e7d0c718&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;  @ .data :&lt;environment: 0x562126fd92f8&gt;</span></span></code></pre></div>
 <p>This is the most convenient way to create ACSets. Let’s also create a
 constructor for our labelled weighted graph schema:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -617,7 +617,7 @@ data with other ACSet implementations (Python, Julia, TypeScript).</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g_parsed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/parse_json_acset.html">parse_json_acset</a></span><span class="op">(</span><span class="va">Graph</span>, <span class="va">json_data</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/acset_equal.html">acset_equal</a></span><span class="op">(</span><span class="va">g_json</span>, <span class="va">g_parsed</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="file-round-trip">File round-trip<a class="anchor" aria-label="anchor" href="#file-round-trip"></a>
@@ -628,7 +628,7 @@ data with other ACSet implementations (Python, Julia, TypeScript).</p>
 <span></span>
 <span><span class="va">g_from_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_json_acset.html">read_json_acset</a></span><span class="op">(</span><span class="va">Graph</span>, <span class="va">tmp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/acset_equal.html">acset_equal</a></span><span class="op">(</span><span class="va">g_json</span>, <span class="va">g_from_file</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>You can also serialize the schema itself:</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/generate_json_schema.html">generate_json_schema</a></span><span class="op">(</span><span class="va">SchGraph</span><span class="op">)</span><span class="op">)</span></span>

@@ -255,7 +255,7 @@ performance — we query every vertex:
 t_idx <- system.time(for (v in seq_len(n_v)) incident(g_idx, v, "src"))
 t_noidx <- system.time(for (v in seq_len(n_v)) incident(g_noidx, v, "src"))
 cat("Indexed:    ", t_idx[["elapsed"]], "s\n")
-#> Indexed:     0.003 s
+#> Indexed:     0.002 s
 cat("No index:   ", t_noidx[["elapsed"]], "s\n")
 #> No index:    0.003 s
 ```
@@ -540,7 +540,7 @@ Parse it back:
 parsed_data <- jsonlite::fromJSON(json_str, simplifyVector = FALSE)
 small2 <- parse_json_acset(FSM, parsed_data)
 acset_equal(small, small2)
-#> [1] FALSE
+#> [1] TRUE
 ```
 
 ### File-Based Round-Trip
@@ -550,7 +550,7 @@ tmp <- tempfile(fileext = ".json")
 write_json_acset(small, tmp)
 small3 <- read_json_acset(FSM, tmp)
 acset_equal(small, small3)
-#> [1] FALSE
+#> [1] TRUE
 ```
 
 ### Schema Serialization
@@ -867,5 +867,5 @@ t_loop <- system.time({
 cat("Batch:  ", t_batch[["elapsed"]], "s\n")
 #> Batch:   0 s
 cat("Loop:   ", t_loop[["elapsed"]], "s\n")
-#> Loop:    0.105 s
+#> Loop:    0.103 s
 ```
