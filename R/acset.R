@@ -6,6 +6,10 @@
 #' (a functor from a schema category to Set). It generalizes both graphs
 #' and data frames.
 #'
+#' @param schema A BasicSchema defining the structure.
+#' @param index Character vector of morphism/attribute names to index.
+#' @returns An ACSet S7 object.
+#' @rdname ACSet-class
 #' @export
 ACSet <- S7::new_class("ACSet",
   properties = list(
@@ -41,6 +45,10 @@ ACSet <- S7::new_class("ACSet",
 # Core operations as S7 generics -------------------------------------------
 
 #' Number of parts of a given object type
+#'
+#' @param x An ACSet.
+#' @returns Integer count of parts.
+#' @param ... Arguments passed to methods.
 #' @export
 nparts <- S7::new_generic("nparts", "x")
 
@@ -49,6 +57,10 @@ S7::method(nparts, ACSet) <- function(x, ob) {
 }
 
 #' Maximum part ID for an object type
+#'
+#' @param x An ACSet.
+#' @returns Integer maximum part ID.
+#' @param ... Arguments passed to methods.
 #' @export
 maxpart <- S7::new_generic("maxpart", "x")
 
@@ -57,6 +69,10 @@ S7::method(maxpart, ACSet) <- function(x, ob) {
 }
 
 #' Get all part IDs for an object type
+#'
+#' @param x An ACSet.
+#' @returns Integer vector of part IDs.
+#' @param ... Arguments passed to methods.
 #' @export
 parts <- S7::new_generic("parts", "x")
 
@@ -65,6 +81,10 @@ S7::method(parts, ACSet) <- function(x, ob) {
 }
 
 #' Check if a part exists
+#'
+#' @param x An ACSet.
+#' @returns Logical.
+#' @param ... Arguments passed to methods.
 #' @export
 has_part <- S7::new_generic("has_part", "x")
 
@@ -73,6 +93,10 @@ S7::method(has_part, ACSet) <- function(x, ob, part) {
 }
 
 #' Check if a subpart (morphism/attribute) exists in the schema
+#'
+#' @param x An ACSet.
+#' @returns Logical.
+#' @param ... Arguments passed to methods.
 #' @export
 has_subpart <- S7::new_generic("has_subpart", "x")
 
@@ -81,6 +105,10 @@ S7::method(has_subpart, ACSet) <- function(x, f) {
 }
 
 #' Add a single part, optionally setting subparts
+#'
+#' @param x An ACSet.
+#' @returns Integer ID of the newly added part.
+#' @param ... Arguments passed to methods.
 #' @export
 add_part <- S7::new_generic("add_part", "x")
 
@@ -107,6 +135,10 @@ S7::method(add_part, ACSet) <- function(x, ob, ...) {
 }
 
 #' Add multiple parts at once
+#'
+#' @param x An ACSet.
+#' @returns Integer vector of newly added part IDs.
+#' @param ... Arguments passed to methods.
 #' @export
 add_parts <- S7::new_generic("add_parts", "x")
 
@@ -134,8 +166,7 @@ S7::method(add_parts, ACSet) <- function(x, ob, n, ...) {
 #' Get subpart value(s)
 #'
 #' @param x An ACSet
-#' @param part Integer part ID(s), or NULL for all parts of the domain object
-#' @param f Character: morphism/attribute name, or character vector for composition
+#' @param ... Arguments passed to methods.
 #' @export
 subpart <- S7::new_generic("subpart", "x")
 
@@ -161,6 +192,10 @@ S7::method(subpart, ACSet) <- function(x, part, f) {
 }
 
 #' Set a single subpart value
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 set_subpart <- S7::new_generic("set_subpart", "x")
 
@@ -174,6 +209,10 @@ S7::method(set_subpart, ACSet) <- function(x, part, f, value) {
 }
 
 #' Set multiple subparts at once
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 set_subparts <- S7::new_generic("set_subparts", "x")
 
@@ -186,6 +225,10 @@ S7::method(set_subparts, ACSet) <- function(x, part, ...) {
 }
 
 #' Clear a subpart value
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 clear_subpart <- S7::new_generic("clear_subpart", "x")
 
@@ -199,8 +242,7 @@ S7::method(clear_subpart, ACSet) <- function(x, part, f) {
 #' Incident query: find parts whose subpart equals a given value
 #'
 #' @param x An ACSet
-#' @param value The value to look up
-#' @param f Character: morphism/attribute name, or vector for composed path
+#' @param ... Arguments passed to methods.
 #' @export
 incident <- S7::new_generic("incident", "x")
 

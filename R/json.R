@@ -2,6 +2,9 @@
 # Compatible with py-acsets, ts-acsets, acsets4j format.
 
 #' Generate JSON-compatible list from an ACSet
+#'
+#' @param x An ACSet.
+#' @returns A nested list suitable for JSON serialization.
 #' @export
 generate_json_acset <- function(x) {
   schema <- x@schema
@@ -33,6 +36,10 @@ generate_json_acset <- function(x) {
 }
 
 #' Parse a JSON-compatible list into an ACSet
+#'
+#' @param constructor An acset_constructor from [acset_type()].
+#' @param input A nested list (typically from JSON) representing ACSet data.
+#' @returns An ACSet instance.
 #' @export
 parse_json_acset <- function(constructor, input) {
   if (inherits(constructor, "acset_constructor")) {
@@ -88,6 +95,10 @@ parse_json_acset <- function(constructor, input) {
 }
 
 #' Write an ACSet to JSON file
+#'
+#' @param x An ACSet.
+#' @param path File path to write to.
+#' @returns The file path, invisibly.
 #' @export
 write_json_acset <- function(x, path) {
   json_data <- generate_json_acset(x)
@@ -96,6 +107,10 @@ write_json_acset <- function(x, path) {
 }
 
 #' Read an ACSet from JSON file
+#'
+#' @param constructor An acset_constructor from [acset_type()].
+#' @param path File path to read from.
+#' @returns An ACSet instance.
 #' @export
 read_json_acset <- function(constructor, path) {
   input <- jsonlite::read_json(path)
@@ -103,7 +118,11 @@ read_json_acset <- function(constructor, path) {
 }
 
 # Schema serialization
-#' @keywords internal
+#' Generate a JSON-compatible list from a schema
+#'
+#' @param schema A BasicSchema.
+#' @returns A list suitable for JSON serialization.
+#' @export
 generate_json_schema <- function(schema) {
   list(
     obs = as.list(schema@obs),
@@ -113,7 +132,11 @@ generate_json_schema <- function(schema) {
   )
 }
 
-#' @keywords internal
+#' Parse a JSON-compatible list into a BasicSchema
+#'
+#' @param input A list (typically from JSON) representing a schema.
+#' @returns A BasicSchema object.
+#' @export
 parse_json_schema <- function(input) {
   BasicSchema(
     obs = vapply(input$obs, identity, character(1)),

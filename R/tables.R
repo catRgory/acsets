@@ -1,6 +1,10 @@
 # Tables and equality -------------------------------------------------------
 
 #' Convert ACSet object type to data.frame
+#'
+#' @param acs An ACSet.
+#' @param ob Character: object type name.
+#' @returns A data frame with part IDs and subpart columns.
 #' @export
 as_data_frame <- function(acs, ob) {
   n <- nparts(acs, ob)
@@ -23,6 +27,9 @@ as_data_frame <- function(acs, ob) {
 }
 
 #' Get all tables from an ACSet
+#'
+#' @param acs An ACSet.
+#' @returns A named list of data frames, one per object type.
 #' @export
 tables <- function(acs) {
   result <- list()
@@ -33,6 +40,10 @@ tables <- function(acs) {
 }
 
 #' Test structural equality of two ACSets
+#'
+#' @param x An ACSet.
+#' @param y An ACSet.
+#' @returns Logical: `TRUE` if the two ACSets are structurally equal.
 #' @export
 acset_equal <- function(x, y) {
   if (!identical(x@schema, y@schema)) return(FALSE)

@@ -65,18 +65,35 @@ BasicSchema <- S7::new_class("BasicSchema",
 )
 
 # Convenience constructor for hom/attr specs
-#' @keywords internal
+#' Create a morphism (foreign key) specification
+#'
+#' @param name Name of the morphism.
+#' @param dom Domain object name.
+#' @param codom Codomain object name.
+#' @returns A named list with elements `name`, `dom`, `codom`.
+#' @export
 hom <- function(name, dom, codom) {
   list(name = name, dom = dom, codom = codom)
 }
 
-#' @keywords internal
+#' Create an attribute specification
+#'
+#' @param name Name of the attribute.
+#' @param dom Domain object name.
+#' @param codom Codomain attribute type name.
+#' @returns A named list with elements `name`, `dom`, `codom`.
+#' @export
 attr_spec <- function(name, dom, codom) {
   list(name = name, dom = dom, codom = codom)
 }
 
 # Schema query functions ----------------------------------------------------
 
+#' Get object names from a schema
+#'
+#' @param x A BasicSchema.
+#' @returns Character vector of object names.
+#' @param ... Arguments passed to methods.
 #' @export
 objects <- S7::new_generic("objects", "x")
 
@@ -84,6 +101,11 @@ S7::method(objects, BasicSchema) <- function(x) {
   x@obs
 }
 
+#' Get morphisms (foreign keys) from a schema
+#'
+#' @param x A BasicSchema.
+#' @returns List of morphism specs.
+#' @param ... Arguments passed to methods.
 #' @export
 homs <- S7::new_generic("homs", "x")
 
@@ -98,6 +120,11 @@ S7::method(homs, BasicSchema) <- function(x, from = NULL, to = NULL) {
   result
 }
 
+#' Get attribute specs from a schema
+#'
+#' @param x A BasicSchema.
+#' @returns List of attribute specs.
+#' @param ... Arguments passed to methods.
 #' @export
 attrs <- S7::new_generic("attrs", "x")
 
@@ -112,6 +139,11 @@ S7::method(attrs, BasicSchema) <- function(x, from = NULL, to = NULL) {
   result
 }
 
+#' Get attribute type names from a schema
+#'
+#' @param x A BasicSchema.
+#' @returns Character vector of attribute type names.
+#' @param ... Arguments passed to methods.
 #' @export
 attrtypes <- S7::new_generic("attrtypes", "x")
 
@@ -119,6 +151,11 @@ S7::method(attrtypes, BasicSchema) <- function(x) {
   x@attrtypes
 }
 
+#' Get all type names (objects and attribute types)
+#'
+#' @param x A BasicSchema.
+#' @returns Character vector of all type names.
+#' @param ... Arguments passed to methods.
 #' @export
 types <- S7::new_generic("types", "x")
 
@@ -126,6 +163,11 @@ S7::method(types, BasicSchema) <- function(x) {
   c(x@obs, x@attrtypes)
 }
 
+#' Get all arrows (morphisms and attributes) from a schema
+#'
+#' @param x A BasicSchema.
+#' @returns List of arrow specs.
+#' @param ... Arguments passed to methods.
 #' @export
 arrows <- S7::new_generic("arrows", "x")
 
@@ -133,6 +175,11 @@ S7::method(arrows, BasicSchema) <- function(x) {
   c(x@homs, x@attrs)
 }
 
+#' Get the domain of an arrow
+#'
+#' @param x A BasicSchema.
+#' @returns Character string naming the domain object.
+#' @param ... Arguments passed to methods.
 #' @export
 dom <- S7::new_generic("dom", "x")
 
@@ -142,6 +189,11 @@ S7::method(dom, BasicSchema) <- function(x, f) {
   cli::cli_abort("Arrow '{f}' not found in schema.")
 }
 
+#' Get the codomain of an arrow
+#'
+#' @param x A BasicSchema.
+#' @returns Character string naming the codomain.
+#' @param ... Arguments passed to methods.
 #' @export
 codom <- S7::new_generic("codom", "x")
 
@@ -174,14 +226,14 @@ S7::method(format, BasicSchema) <- function(x, ...) {
   obs_str <- paste(x@obs, collapse = ", ")
   lines <- c(lines, sprintf("  obs: %s", obs_str))
   if (length(x@homs) > 0) {
-    hom_strs <- vapply(x@homs, function(h) sprintf("%s: %s → %s", h$name, h$dom, h$codom), character(1))
+    hom_strs <- vapply(x@homs, function(h) sprintf("%s: %s \u2192 %s", h$name, h$dom, h$codom), character(1))
     lines <- c(lines, sprintf("  homs: %s", paste(hom_strs, collapse = ", ")))
   }
   if (length(x@attrtypes) > 0) {
     lines <- c(lines, sprintf("  attrtypes: %s", paste(x@attrtypes, collapse = ", ")))
   }
   if (length(x@attrs) > 0) {
-    attr_strs <- vapply(x@attrs, function(a) sprintf("%s: %s → %s", a$name, a$dom, a$codom), character(1))
+    attr_strs <- vapply(x@attrs, function(a) sprintf("%s: %s \u2192 %s", a$name, a$dom, a$codom), character(1))
     lines <- c(lines, sprintf("  attrs: %s", paste(attr_strs, collapse = ", ")))
   }
   paste(lines, collapse = "\n")

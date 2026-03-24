@@ -75,7 +75,10 @@ acset <- function(type, ...) {
 # Copy and disjoint union --------------------------------------------------
 
 #' Create a deep copy of an ACSet
-#' @keywords internal
+#'
+#' @param x An ACSet.
+#' @returns A new ACSet that is a deep copy of `x`.
+#' @export
 copy_acset <- function(x) {
   acs <- ACSet(x@schema, index = names(which(
     vapply(x@.data$index_config, function(ic) ic != INDEX_NONE, logical(1))
@@ -95,6 +98,10 @@ copy_acset <- function(x) {
 }
 
 #' Disjoint union of two ACSets with the same schema
+#'
+#' @param x An ACSet.
+#' @returns A new ACSet containing the disjoint union.
+#' @param ... Arguments passed to methods.
 #' @export
 disjoint_union <- S7::new_generic("disjoint_union", "x")
 

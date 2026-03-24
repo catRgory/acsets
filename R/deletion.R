@@ -1,6 +1,10 @@
 # Deletion operations -------------------------------------------------------
 
 #' Remove a single part using pop-and-swap strategy
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 rem_part <- S7::new_generic("rem_part", "x")
 
@@ -80,6 +84,10 @@ S7::method(rem_part, ACSet) <- function(x, ob, part) {
 }
 
 #' Remove multiple parts (must be processed from largest to smallest)
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 rem_parts <- S7::new_generic("rem_parts", "x")
 
@@ -91,6 +99,10 @@ S7::method(rem_parts, ACSet) <- function(x, ob, part_ids) {
 }
 
 #' Remove a part and cascade to dependent parts
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 cascading_rem_part <- S7::new_generic("cascading_rem_part", "x")
 
@@ -110,6 +122,10 @@ S7::method(cascading_rem_part, ACSet) <- function(x, ob, part) {
 }
 
 #' Remove multiple parts with cascading
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 cascading_rem_parts <- S7::new_generic("cascading_rem_parts", "x")
 
@@ -121,6 +137,10 @@ S7::method(cascading_rem_parts, ACSet) <- function(x, ob, part_ids) {
 }
 
 #' Garbage collection for BitSetParts (no-op for IntParts)
+#'
+#' @param x An ACSet.
+#' @returns The ACSet, invisibly.
+#' @param ... Arguments passed to methods.
 #' @export
 gc_acset <- S7::new_generic("gc_acset", "x")
 

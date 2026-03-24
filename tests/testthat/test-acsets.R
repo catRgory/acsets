@@ -1,18 +1,6 @@
+# Package is loaded by tests/testthat.R via library(acsets)
 library(testthat)
-library(S7)
-
-# Source all files in dependency order
-source_dir <- file.path(getwd(), "..", "..", "R")
-source(file.path(source_dir, "acsets-package.R"))
-source(file.path(source_dir, "schema.R"))
-source(file.path(source_dir, "parts.R"))
-source(file.path(source_dir, "columns.R"))
-source(file.path(source_dir, "acset.R"))
-source(file.path(source_dir, "deletion.R"))
-source(file.path(source_dir, "factory.R"))
-source(file.path(source_dir, "json.R"))
-source(file.path(source_dir, "query.R"))
-source(file.path(source_dir, "tables.R"))
+library(acsets)
 
 # === Schema tests ==========================================================
 
