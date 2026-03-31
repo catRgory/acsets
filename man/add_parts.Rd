@@ -9,7 +9,8 @@ add_parts(x, ...)
 \arguments{
 \item{x}{An ACSet.}
 
-\item{...}{Named subpart values, recycled across new parts.}
+\item{...}{Named subpart values. Vectors must have length 1, length \code{n}, or
+recycle evenly across \code{n}.}
 }
 \value{
 Integer vector of newly added part IDs.

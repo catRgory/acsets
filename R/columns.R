@@ -32,6 +32,48 @@ new_attr_column <- function(index_type = INDEX_NONE, n = 0L, default = NA) {
   col
 }
 
+column_normalize_values <- function(values, n, context = "values") {
+  if (n == 0L) {
+    return(values[0])
+  }
+  if (length(values) == n) {
+    return(values)
+  }
+  if (length(values) == 1L) {
+    return(rep(values, n))
+  }
+  if (length(values) > 0L && n %% length(values) == 0L) {
+    return(rep(values, length.out = n))
+  }
+  cli::cli_abort("{context} must have length 1, {n}, or divide {n} exactly.")
+}
+
+column_validate_position <- function(col, i, context = "column position") {
+  if (!is.numeric(i) || length(i) != 1L || is.na(i) || i != as.integer(i)) {
+    cli::cli_abort("{context} must be a single integer index.")
+  }
+  i <- as.integer(i)
+  if (i < 1L || i > length(col$values)) {
+    cli::cli_abort("{context} {i} is out of bounds for a column of length {length(col$values)}.")
+  }
+  i
+}
+
+column_validate_positions <- function(col, idx, context = "column positions") {
+  if (length(idx) == 0L) {
+    return(integer(0))
+  }
+  if (!is.numeric(idx) || any(is.na(idx)) || any(idx != as.integer(idx))) {
+    cli::cli_abort("{context} must be integer indices.")
+  }
+  idx <- as.integer(idx)
+  bad <- idx[idx < 1L | idx > length(col$values)]
+  if (length(bad) > 0L) {
+    cli::cli_abort("{context} contain out-of-bounds indices for a column of length {length(col$values)}.")
+  }
+  idx
+}
+
 # Grow column by n slots
 column_grow <- function(col, n) {
   col$values <- c(col$values, rep(NA, n))
@@ -51,6 +93,8 @@ column_get_multi <- function(col, idx) {
 
 # Set value at position i, maintaining index
 column_set <- function(col, i, value) {
+  i <- column_validate_position(col, i)
+  value <- column_normalize_values(value, 1L, "value")[[1L]]
   old_val <- col$values[i]
   old_defined <- col$defined[i]
   col$values[i] <- value
@@ -82,7 +126,8 @@ column_set <- function(col, i, value) {
 
 # Set multiple values at positions idx
 column_set_multi <- function(col, idx, values) {
-  if (length(values) == 1L) values <- rep(values, length(idx))
+  idx <- column_validate_positions(col, idx)
+  values <- column_normalize_values(values, length(idx), "values")
   for (k in seq_along(idx)) {
     column_set(col, idx[k], values[k])
   }
@@ -91,6 +136,7 @@ column_set_multi <- function(col, idx, values) {
 
 # Clear value at position i
 column_clear <- function(col, i) {
+  i <- column_validate_position(col, i)
   old_val <- col$values[i]
   old_defined <- col$defined[i]
   col$values[i] <- NA

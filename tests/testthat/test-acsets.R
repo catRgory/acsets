@@ -47,6 +47,13 @@ test_that("IntParts basic operations work", {
   expect_false(parts_has(p, 4L))
 })
 
+test_that("parts_add validates counts", {
+  p <- new_int_parts()
+  expect_equal(parts_add(p, 0L), integer(0))
+  expect_equal(parts_nparts(p), 0L)
+  expect_error(parts_add(p, -1L), "single non-negative integer")
+})
+
 # === Column tests ==========================================================
 
 test_that("Unindexed column works", {
@@ -129,6 +136,39 @@ test_that("set_subpart and clear_subpart work", {
   expect_equal(subpart(g, 1L, "src"), 1L)
   clear_subpart(g, 1L, "src")
   expect_true(is.na(subpart(g, 1L, "src")))
+})
+
+test_that("subpart writes enforce schema domains and references", {
+  g <- ACSet(SchGraph)
+  add_part(g, "V")
+  expect_error(add_part(g, "V", src = 1L), "domain 'E'")
+  expect_error(add_parts(g, "V", 2L, src = c(1L, 1L)), "domain 'E'")
+
+  add_part(g, "E")
+  expect_error(set_subpart(g, 2L, "src", 1L), "Part 2 of 'E' does not exist")
+  expect_error(set_subpart(g, 1L, "src", 99L), "reference missing parts")
+  expect_error(clear_subpart(g, 2L, "src"), "Part 2 of 'E' does not exist")
+})
+
+test_that("bulk subpart writes require compatible lengths", {
+  sch <- BasicSchema(
+    obs = c("V"),
+    attrtypes = c("Name"),
+    attrs = list(attr_spec("name", "V", "Name"))
+  )
+  g <- ACSet(sch)
+
+  add_parts(g, "V", 4L, name = c("a", "b"))
+  expect_equal(subpart(g, NULL, "name"), c("a", "b", "a", "b"))
+
+  expect_error(
+    add_parts(g, "V", 5L, name = c("x", "y")),
+    "divide 5 exactly"
+  )
+  expect_error(
+    set_subpart(g, c(1L, 2L, 3L), "name", c("u", "v")),
+    "divide 3 exactly"
+  )
 })
 
 # === Deletion tests ========================================================

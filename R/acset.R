@@ -121,6 +121,92 @@ S7::method(has_subpart, ACSet) <- function(x, f) {
   f %in% names(x@.data$subparts)
 }
 
+validate_acset_object <- function(x, ob) {
+  if (!(ob %in% objects(x@schema))) {
+    cli::cli_abort("Object '{ob}' not found in schema.")
+  }
+  ob
+}
+
+validate_subpart_name <- function(x, f) {
+  if (!has_subpart(x, f)) {
+    cli::cli_abort("Subpart '{f}' not found in schema.")
+  }
+  f
+}
+
+validate_part_ids <- function(part, what = "part IDs") {
+  if (length(part) == 0L) {
+    return(integer(0))
+  }
+  if (!is.numeric(part) || any(is.na(part)) || any(part != as.integer(part))) {
+    cli::cli_abort("{what} must be integer part IDs.")
+  }
+  as.integer(part)
+}
+
+validate_existing_parts <- function(x, ob, part) {
+  part <- validate_part_ids(part)
+  missing <- part[!vapply(part, function(p) has_part(x, ob, p), logical(1))]
+  if (length(missing) > 0L) {
+    cli::cli_abort("Part {missing[[1L]]} of '{ob}' does not exist.")
+  }
+  part
+}
+
+validate_hom_values <- function(x, f, values, new_parts_for = NULL, new_part_count = 0L) {
+  if (!schema_is_hom(x@schema, f) || length(values) == 0L) {
+    return(values)
+  }
+
+  non_missing <- !is.na(values)
+  if (!any(non_missing)) {
+    return(values)
+  }
+
+  refs <- values[non_missing]
+  if (!is.numeric(refs) || any(refs != as.integer(refs))) {
+    cli::cli_abort("Values for hom '{f}' must be integer part IDs or NA.")
+  }
+
+  refs <- as.integer(refs)
+  codom_ob <- codom(x@schema, f)
+  max_allowed <- nparts(x, codom_ob)
+  if (!is.null(new_parts_for) && identical(codom_ob, new_parts_for)) {
+    max_allowed <- max_allowed + new_part_count
+  }
+
+  bad <- refs[refs < 1L | refs > max_allowed]
+  if (length(bad) > 0L) {
+    cli::cli_abort("Values for hom '{f}' reference missing parts of '{codom_ob}'.")
+  }
+
+  values[non_missing] <- refs
+  values
+}
+
+prepare_new_subpart_values <- function(x, ob, kwargs, n) {
+  schema <- x@schema
+  lapply(names(kwargs), function(nm) {
+    validate_subpart_name(x, nm)
+    expected_ob <- dom(schema, nm)
+    if (!identical(expected_ob, ob)) {
+      cli::cli_abort("Subpart '{nm}' has domain '{expected_ob}', not '{ob}'.")
+    }
+    values <- column_normalize_values(kwargs[[nm]], n, "Subpart values")
+    validate_hom_values(x, nm, values, new_parts_for = ob, new_part_count = n)
+  }) |> stats::setNames(names(kwargs))
+}
+
+prepare_existing_subpart_values <- function(x, part, f, value) {
+  validate_subpart_name(x, f)
+  ob <- dom(x@schema, f)
+  part <- validate_existing_parts(x, ob, part)
+  value <- column_normalize_values(value, length(part), "Subpart values")
+  value <- validate_hom_values(x, f, value)
+  list(ob = ob, part = part, value = value)
+}
+
 #' Add a single part, optionally setting subparts
 #'
 #' @param x An ACSet.
@@ -140,6 +226,8 @@ S7::method(has_subpart, ACSet) <- function(x, f) {
 add_part <- S7::new_generic("add_part", "x")
 
 S7::method(add_part, ACSet) <- function(x, ob, ...) {
+  ob <- validate_acset_object(x, ob)
+  kwargs <- prepare_new_subpart_values(x, ob, list(...), 1L)
   new_ids <- parts_add(x@.data$parts[[ob]], 1L)
   id <- new_ids[1L]
 
@@ -152,11 +240,8 @@ S7::method(add_part, ACSet) <- function(x, ob, ...) {
   }
 
   # Set any provided subpart values
-  kwargs <- list(...)
   for (nm in names(kwargs)) {
-    if (nm %in% names(x@.data$subparts)) {
-      column_set(x@.data$subparts[[nm]], id, kwargs[[nm]])
-    }
+    column_set(x@.data$subparts[[nm]], id, kwargs[[nm]])
   }
   id
 }
@@ -165,7 +250,8 @@ S7::method(add_part, ACSet) <- function(x, ob, ...) {
 #'
 #' @param x An ACSet.
 #' @returns Integer vector of newly added part IDs.
-#' @param ... Named subpart values, recycled across new parts.
+#' @param ... Named subpart values. Vectors must have length 1, length `n`, or
+#'   recycle evenly across `n`.
 #' @examples
 #' sch <- BasicSchema(
 #'   obs = c("V"),
@@ -180,7 +266,9 @@ S7::method(add_part, ACSet) <- function(x, ob, ...) {
 add_parts <- S7::new_generic("add_parts", "x")
 
 S7::method(add_parts, ACSet) <- function(x, ob, n, ...) {
-  n <- as.integer(n)
+  ob <- validate_acset_object(x, ob)
+  n <- parts_normalize_count(n)
+  kwargs <- prepare_new_subpart_values(x, ob, list(...), n)
   new_ids <- parts_add(x@.data$parts[[ob]], n)
 
   for (h in x@schema@homs) {
@@ -190,12 +278,8 @@ S7::method(add_parts, ACSet) <- function(x, ob, n, ...) {
     if (a$dom == ob) column_grow(x@.data$subparts[[a$name]], n)
   }
 
-  kwargs <- list(...)
   for (nm in names(kwargs)) {
-    if (nm %in% names(x@.data$subparts)) {
-      vals <- kwargs[[nm]]
-      column_set_multi(x@.data$subparts[[nm]], new_ids, vals)
-    }
+    column_set_multi(x@.data$subparts[[nm]], new_ids, kwargs[[nm]])
   }
   new_ids
 }
@@ -253,10 +337,11 @@ S7::method(subpart, ACSet) <- function(x, part, f) {
 set_subpart <- S7::new_generic("set_subpart", "x")
 
 S7::method(set_subpart, ACSet) <- function(x, part, f, value) {
-  if (length(part) == 1L && length(value) == 1L) {
-    column_set(x@.data$subparts[[f]], part, value)
+  prepared <- prepare_existing_subpart_values(x, part, f, value)
+  if (length(prepared$part) == 1L && length(prepared$value) == 1L) {
+    column_set(x@.data$subparts[[f]], prepared$part, prepared$value)
   } else {
-    column_set_multi(x@.data$subparts[[f]], part, value)
+    column_set_multi(x@.data$subparts[[f]], prepared$part, prepared$value)
   }
   invisible(x)
 }
@@ -286,7 +371,9 @@ S7::method(set_subparts, ACSet) <- function(x, part, ...) {
 clear_subpart <- S7::new_generic("clear_subpart", "x")
 
 S7::method(clear_subpart, ACSet) <- function(x, part, f) {
-  for (i in part) {
+  validate_subpart_name(x, f)
+  ob <- dom(x@schema, f)
+  for (i in validate_existing_parts(x, ob, part)) {
     column_clear(x@.data$subparts[[f]], i)
   }
   invisible(x)

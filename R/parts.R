@@ -21,6 +21,13 @@ new_bitset_parts <- function(n = 0L) {
   env
 }
 
+parts_normalize_count <- function(n) {
+  if (!is.numeric(n) || length(n) != 1L || is.na(n) || n != as.integer(n) || n < 0L) {
+    cli::cli_abort("'n' must be a single non-negative integer.")
+  }
+  as.integer(n)
+}
+
 # Parts interface
 parts_nparts <- function(p) {
   if (p$type == "int") p$n else sum(p$active)
@@ -43,7 +50,10 @@ parts_has <- function(p, i) {
 }
 
 parts_add <- function(p, n = 1L) {
-  n <- as.integer(n)
+  n <- parts_normalize_count(n)
+  if (n == 0L) {
+    return(integer(0))
+  }
   if (p$type == "int") {
     old <- p$n
     p$n <- old + n
